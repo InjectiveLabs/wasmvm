@@ -105,14 +105,10 @@ pub extern "C" fn save_wasm(
 fn do_save_wasm(
     cache: &mut Cache<GoApi, GoStorage, GoQuerier>,
     wasm: ByteSliceView,
-    unchecked: bool,
+    _unchecked: bool,
 ) -> Result<Checksum, Error> {
     let wasm = wasm.read().ok_or_else(|| Error::unset_arg(WASM_ARG))?;
-    let checksum = if unchecked {
-        cache.save_wasm_unchecked(wasm)?
-    } else {
-        cache.save_wasm(wasm)?
-    };
+    let checksum = cache.save_wasm(wasm)?;
     Ok(checksum)
 }
 
